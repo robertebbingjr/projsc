@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="general"
+        android:title="General"
+        >
+
+        <SwitchPreference
+            android:key="@string/settings_switch_snip_key"
+            android:title="Snipping tool"
+            android:defaultValue="true"
+            android:summary="@string/switch_preference_snipping_tool_on_summary"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="image"
+        android:title="Image"
+        >
+
+        <ListPreference
+            android:key="@string/settings_image_compression_format_key"
+            android:title="Image compression format"
+            android:dialogTitle="Select the image file type"
+            android:entries="@array/pref_image_file_type"
+            android:entryValues="@array/pref_image_file_type"
+            android:defaultValue="PNG"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <EditTextPreference
+            android:key="@string/settings_image_quality_key"
+            android:title="Image quality"
+            android:dialogTitle="Enter a value between 0 and 100"
+            android:defaultValue="100"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <SwitchPreference
+            android:key="@string/settings_switch_status_bar"
+            android:title="Status bar"
+            android:defaultValue="true"
+            android:summary="@string/switch_preference_status_bar_on_summary"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <SwitchPreference
+            android:key="@string/settings_switch_navigation_bar"
+            android:title="Navigation bar"
+            android:defaultValue="true"
+            android:summary="@string/switch_preference_navigation_bar_on_summary"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="floating_button_category"
+        android:title="Floating Button"
+        >
+
+        <ListPreference
+            android:key="@string/settings_button_color_key"
+            android:title="Button color"
+            android:dialogTitle="Select the color for floating button"
+            android:entries="@array/pref_button_colors"
+            android:entryValues="@array/pref_button_colors"
+            android:defaultValue="Default"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <ListPreference
+            android:key="@string/settings_button_size_key"
+            android:title="Button size"
+            android:dialogTitle="Select the size of floating button"
+            android:entries="@array/pref_button_size"
+            android:entryValues="@array/pref_button_size"
+            android:defaultValue="Medium"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <EditTextPreference
+            android:key="@string/settings_button_opacity_key"
+            android:title="Button opacity"
+            android:dialogTitle="Enter a value between 0 and 100"
+            android:defaultValue="50"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="info"
+        android:title="Info"
+        >
+
+        <Preference
+            android:key="@string/settings_about_app_key"
+            android:title="About ScreenSnip"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <Preference
+            android:key="version_history"
+            android:title="Update history"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

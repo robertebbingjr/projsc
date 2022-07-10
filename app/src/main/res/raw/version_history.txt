@@ -1,0 +1,55 @@
+1.0.6
+- Implemented Firebase analytics
+- Added "Go to App" option in notification
+- Disabled interstitial ads
+
+1.0.5.1
+- Minor fixes
+(6/6/2022)
+
+1.0.5
+- Fixed screen framing glitch
+- Enhanced the control dashboard in notification area
+- Enabled notification dismissal
+- Linked power on/off toggle to service start/stop
+(5/29/2022)
+
+1.0.4.3
+- MainActivity closes after CropActivity to prevent unexpected interruption after screen capture
+(5/26/2022)
+
+1.0.4.2
+- Moved the starting position of the floating button to center left to prevent obstruction to navigation
+(5/26/2022)
+
+1.0.4.1
+- Hotfix for delayed screenshot availability
+(5/25/2022)
+
+1.0.4
+- Added hide status bar / navigation bar feature
+- Image storage directory fix for Android 28 (Q)
+(5/25/2022)
+
+1.0.3
+- Improved notification
+- Fixed power on/off glitch
+(5/23/2022)
+
+1.0.2
+- Added screenshot for overlay permission
+- Fixed duplicated floating buttons glitch when app shuts down
+- Added version history page
+(5/22/2022)
+
+1.0.1
+- Changed floating button style
+- Added button size setting
+- Added button opacity setting
+- Added about page
+- Imposed minimum Android API
+(5/22/2022)
+
+1.0.0
+Initial launch
+(5/20/2022)

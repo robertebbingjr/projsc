@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#efefef</color>
+    <color name="silver">#c0c0c0</color>
+    <color name="grey">#808080</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="maroon">#800000</color>
+    <color name="yellow">#ffff00</color>
+    <color name="olive">#808000</color>
+    <color name="lime">#00ff00</color>
+    <color name="green">#008000</color>
+    <color name="aqua">#00ffff</color>
+    <color name="teal">#008080</color>
+    <color name="blue">#0000ff</color>
+    <color name="navy">#000080</color>
+    <color name="fuchsia">#ff00ff</color>
+    <color name="purple">#800080</color>
+
+    <color name="grey_9">#262626</color>
+    <color name="grey_8">#4d4d4d</color>
+    <color name="grey_7">#878787</color>
+    <color name="grey_6">#808080</color>
+    <color name="grey_5">#a0a0a0</color>
+    <color name="grey_4">#c0c0c0</color>
+    <color name="grey_3">#BDBDBD</color>
+    <color name="grey_2">#e0e0e0</color>
+    <color name="grey_1">#efefef</color>
+
+    <color name="teal_6">#0a3a2a</color>
+    <color name="teal_5">#137a63</color>
+    <color name="teal_4">#5aa17f</color>
+    <color name="teal_3">#81b69d</color>
+    <color name="teal_2">#92ddc8</color>
+    <color name="teal_1">#66c6b9</color>
+
+
+    <color name="blue_7">#0D47A1</color>
+    <color name="blue_6">#1565c0</color>
+    <color name="blue_5">#1976d2</color>
+    <color name="blue_4">#1e88e5</color>
+    <color name="blue_3">#2196f3</color>
+    <color name="blue_2">#42a5f5</color>
+    <color name="blue_1">#64b5f6</color>
+
+    <color name="status_green">#00E676</color>
+    <color name="status_yellow">#ffea00</color>
+    <color name="status_orange">#fb8c00</color>
+    <color name="status_red">#ff5722</color>
+
+    <color name="finchat_icon_blue">#1187cf</color>
+    <color name="finchat_blue_2">#116ca6</color>
+    <color name="dp_teal">#35B5C9</color>
+    <color name="hugs_pink">#ffacb7</color>
+
+    <color name="empty_background">#ededed</color>
+    <color name="link_color">#2196F3</color>
+    <color name="icon_gray">#BDBDBD</color>
+    <color name="check_green">#2ecc71</color>
+    <color name="star_yellow">#F4CD1E</color>
+    <color name="star_orange">#F6AB27</color>
+    <color name="crown_yellow">#ffc107</color>
+
+    <color name="swipe_area">#58FF00</color>
+    <color name="power_off">#f6004b</color>
+    <color name="power_on">#58FF00</color>
+    <color name="light_grey">#999999</color>
+    <color name="dark_grey">#303030</color>
+    <color name="capture_button">#6694FF</color>
+
+    <color name="screensnip_green">#25EEAE</color>
+    <color name="screensnip_green_variant">#0FB37F</color>
+
+</resources>

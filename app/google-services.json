@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "393766031000",
+    "project_id": "project-screen-capture",
+    "storage_bucket": "project-screen-capture.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393766031000:android:e1e10d9bce577edeb64aed",
+        "android_client_info": {
+          "package_name": "com.happenstance.projsc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393766031000-ubrb8i97bjsh1efunivjlfdc7f2m3lbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.happenstance.projsc",
+            "certificate_hash": "0faee7b1fb4abce7b6b34ccc895862272674959e"
+          }
+        },
+        {
+          "client_id": "393766031000-mas3t8q1ivs3eds15pcs6gc4quaf1ffj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo-zqmPta28fCXk-ZpqWFHc4dtpe4FeUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393766031000-mas3t8q1ivs3eds15pcs6gc4quaf1ffj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
