@@ -36,7 +36,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.happenstance.projsc.R;
 import com.happenstance.projsc.constants.Constants;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.happenstance.projsc.models.InterstitialAdObject;
+//import com.happenstance.projsc.models.InterstitialAdObject;
 
 import java.io.File;
 
