@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">ScreenSnip</string>
-    <string name="app_folder">ScreenSnip</string>
-    <string name="notification_channel_id">happenstance.projsc</string>
+    <string name="directory_name" translatable="false">ScreenSnip</string>
+    <string name="notification_channel_id" translatable="false">happenstance.projsc</string>
+    <string name="shared_preference_name" translatable="false">com.happenstance.ldp</string>
 
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="switch_preference_snipping_tool_on_summary">Crop after full screen capture</string>
@@ -11,8 +12,8 @@
     <string name="switch_preference_navigation_bar_on_summary">Show navigation bar in capture</string>
     <string name="switch_preference_navigation_bar_off_summary">Hide navigation bar in capture</string>
     <string name="admob_app_id">ca-app-pub-9779268358429578~1044973803</string>
-    <string name="banner_ad_id">ca-app-pub-9779268358429578/6271581455</string>
-<!--    <string name="interstitial_ad_id">ca-app-pub-9779268358429578/9929423737</string>-->
+    <string name="banner_ad_id">ca-app-pub-9779268358429578/6626882860</string>
+    <string name="interstitial_ad_id">ca-app-pub-9779268358429578/1773995528</string>
     <string name="settings_button_opacity_key">button_opacity</string>
     <string name="settings_button_size_key">button_size</string>
     <string name="settings_button_color_key">button_color</string>
@@ -49,6 +50,8 @@
         <item>PNG</item>
         <item>JPG</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--<string-array name="pref_image_file_type_values">
         <item>0</item>

@@ -4,10 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <include
+        android:id="@+id/flCustomToolbar"
+        layout="@layout/custom_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
     <!--frame layout for displaying
         our preference fragment-->
     <FrameLayout
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flCustomToolbar"
         app:layout_constraintBottom_toTopOf="@id/flBanner"
         android:id="@+id/idFrameLayout"
         android:layout_width="match_parent"

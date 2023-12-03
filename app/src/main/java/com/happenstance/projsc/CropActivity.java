@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.canhub.cropper.CropImageOptions;
 import com.canhub.cropper.CropImageView;
 import com.happenstance.projsc.constants.Extras;
 import com.happenstance.projsc.exception_handler.ExceptionHandler;
+import com.happenstance.projsc.gallery.GalleryActivity;
 import com.happenstance.projsc.preferences.Preferences;
 import com.happenstance.projsc.utils.Utilities;
 
@@ -27,6 +29,7 @@ import java.util.Objects;
 
 public class CropActivity extends AppCompatActivity {
     private static final String TAG = "CropActivity";
+    private Uri uriCapturedImage;
 
     private final ActivityResultLauncher<CropImageContractOptions> cropImage = registerForActivityResult(new CropImageContract(), this::onCropImageResult);
 
@@ -42,7 +45,7 @@ public class CropActivity extends AppCompatActivity {
             FloatingButtonService.showUI();
             finish();
         } else {
-            Uri uriCapturedImage = Uri.parse(stringUriCapturedImage);
+            uriCapturedImage = Uri.parse(stringUriCapturedImage);
             startCameraWithUri(uriCapturedImage);
         }
     }
@@ -58,19 +61,27 @@ public class CropActivity extends AppCompatActivity {
             } else {
                 Utilities.showErrorMessage(this,"Snipping image failed");
             }
-//            if (result != null && result.getUriContent() != null) {
-//                File fileFailed = new File(result.getUriContent().getPath());
-//                fileFailed.delete();
-//            }
-            FloatingButtonService.showUI();
-            finish();
+
+            finishSequence();
         }
     }
 
     private void handleCropImageResult(@NotNull String uri) {
         //SampleResultScreen.Companion.start(this, null, Uri.parse(uri), null);
         Toast.makeText(this, "Snipped image saved successfully", Toast.LENGTH_SHORT).show();
+
+        // Delete original captured file
+        Utilities.deleteUri(this, uriCapturedImage);
+
+        finishSequence();
+    }
+
+    private void finishSequence() {
         FloatingButtonService.showUI();
+
+        // Start GalleryActivity and finish
+        Intent intent = new Intent(this, GalleryActivity.class);
+        startActivity(intent);
         finish();
     }
 

@@ -1,7 +1,20 @@
+1.1.0
+- Incorporated gallery
+- Removed margin in captured images
+- Remote config for ad switch
+- Remove floating button area
+(12/3/2023)
+
+1.0.7
+- Target SDK PendingIntent fix
+- Xiaomi display pop-up window dialog
+(9/2/2023)
+
 1.0.6
 - Implemented Firebase analytics
 - Added "Go to App" option in notification
 - Disabled interstitial ads
+(6/13/2022)
 
 1.0.5.1
 - Minor fixes

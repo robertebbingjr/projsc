@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
@@ -106,8 +108,15 @@ public class ScreenCapture {
 
         DisplayMetrics displayMetrics = FloatingButtonService.getDisplayMetrics();
         if (displayMetrics == null) {
-            width = Resources.getSystem().getDisplayMetrics().widthPixels;
-            height = Resources.getSystem().getDisplayMetrics().heightPixels;
+            Point size = new Point();
+            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            windowManager.getDefaultDisplay().getRealSize(size);
+
+            width = size.x;
+            height = size.y;
+
+//            width = Resources.getSystem().getDisplayMetrics().widthPixels;
+//            height = Resources.getSystem().getDisplayMetrics().heightPixels;
             density = Resources.getSystem().getDisplayMetrics().densityDpi;
         } else {
             width = displayMetrics.widthPixels;
@@ -148,12 +157,16 @@ public class ScreenCapture {
                     ByteBuffer buffer = planes[0].getBuffer();
                     int pixelStride = planes[0].getPixelStride();
                     int rowStride = planes[0].getRowStride();
-                    int rowPadding = rowStride - pixelStride * width;
+                    int rowPadding = rowStride - pixelStride * image.getWidth();
 
                     // create bitmap
-                    bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
-//                    bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    bitmap = Bitmap.createBitmap(image.getWidth() + rowPadding / pixelStride, image.getHeight(), Bitmap.Config.ARGB_8888);
+//                    bitmap = Bitmap.createBitmap(width + rowPadding, height, Bitmap.Config.ARGB_8888);
                     bitmap.copyPixelsFromBuffer(buffer);
+
+                    // Remove white edges
+                    Rect rect = image.getCropRect();
+                    bitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height());
 
                     boolean showStatusBar = Preferences.showStatusBar(context);
                     boolean showNavigationBar = Preferences.showNavigationBar(context);
@@ -161,10 +174,10 @@ public class ScreenCapture {
                     if (!showStatusBar || !showNavigationBar) {
                         int statusBarHeight = showStatusBar ? 0 : Utilities.getStatusBarHeight(context);
                         int navigationBarHeight = showNavigationBar ? 0 : Utilities.getNavigationBarHeight(context);
-                        int adjustedHeight = height - statusBarHeight - navigationBarHeight;
+                        int adjustedHeight = image.getHeight() - statusBarHeight - navigationBarHeight;
                         int startY = showStatusBar ? 0 : statusBarHeight;
 
-                        bitmap = Bitmap.createBitmap(bitmap, 0, startY, bitmap.getWidth(), adjustedHeight);
+                        bitmap = Bitmap.createBitmap(bitmap, 0, startY, image.getWidth(), adjustedHeight);
                     }
 
                     String compressType = Preferences.getImageCompressFormat(context);
@@ -214,6 +227,7 @@ public class ScreenCapture {
     private void handleNextStep(Uri uriOutput) throws IOException {
         if (Preferences.isSnippingTool(context)) {
             FloatingButtonService.hideUI();
+            Toast.makeText(context, "Please snip the captured image", Toast.LENGTH_SHORT).show();
 
             // Need to close MainActivity otherwise CropActivity->back press will revert to Main
             Intent intentCloseMainActivity = new Intent(Broadcast.CLOSE_MAIN_ACTIVITY);
@@ -221,6 +235,7 @@ public class ScreenCapture {
 
             Intent intentStartCropActivity = new Intent(context, CropActivity.class);
             intentStartCropActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intentStartCropActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intentStartCropActivity.putExtra(Extras.CAPTURED_IMAGE_URI, uriOutput.toString());
             context.startActivity(intentStartCropActivity);
         } else {

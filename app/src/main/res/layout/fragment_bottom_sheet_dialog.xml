@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="File Info"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="File name: "
+            android:textAppearance="@style/SmallCustom"
+            />
+        <TextView
+            android:id="@+id/tvFileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456789.png"
+            android:textAppearance="@style/SmallCustom"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last modified: "
+            android:textAppearance="@style/SmallCustom"
+            />
+        <TextView
+            android:id="@+id/tvLastModified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6/8/2022 11:23PM"
+            android:textAppearance="@style/SmallCustom"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Local path: "
+            android:textAppearance="@style/SmallCustom"
+            />
+        <TextView
+            android:id="@+id/tvLocalPath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HiddenViewer/123456789.png"
+            android:textAppearance="@style/SmallCustom"
+            />
+    </LinearLayout>
+
+</LinearLayout>

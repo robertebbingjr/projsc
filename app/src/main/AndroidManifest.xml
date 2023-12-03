@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.happenstance.projsc" >
+    package="com.happenstance.projsc">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,7 +13,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projsc" >
+        android:theme="@style/Theme.Projsc">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".gallery.GalleryActivity"
+            android:exported="false">
+
+            <!-- <meta-data -->
+            <!-- android:name="android.app.lib_name" -->
+            <!-- android:value="" /> -->
+        </activity>
         <activity
             android:name=".about.VersionHistoryActivity"
             android:exported="false" />
@@ -26,35 +44,30 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id" />
-
+            android:value="@string/admob_app_id" /> <!-- Theme is optional and only needed if default theme has no action bar. -->
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".CropActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".preferences.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
 
         <service
             android:name=".FloatingButtonService"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="mediaProjection" />
-
         <service
             android:name=".NotificationResponderService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

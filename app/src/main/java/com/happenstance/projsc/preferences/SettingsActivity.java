@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -17,12 +18,16 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.happenstance.projsc.R;
 import com.happenstance.projsc.exception_handler.ExceptionHandler;
+import com.happenstance.projsc.gallery.GalleryActivity;
+import com.happenstance.projsc.models.InterstitialAdObject;
+import com.happenstance.projsc.utils.AdsUtil;
+import com.happenstance.projsc.utils.Utilities;
 //import com.happenstance.projsc.models.InterstitialAdObject;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
 
-//    private InterstitialAdObject interstitialAdObject = new InterstitialAdObject();
+    private InterstitialAdObject interstitialAdObject = new InterstitialAdObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,28 +41,16 @@ public class SettingsActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                avMain.loadAd(adRequest);
-                avMain.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        Log.e(TAG, "Failed to load Admob banner: " + loadAdError.getMessage());
-                    }
+                AdsUtil.loadInterstitial(SettingsActivity.this,
+                        getString(R.string.interstitial_ad_id),
+                        interstitialAdObject, null);
 
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        flBanner.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "Successfully loaded Admob banner");
-                    }
-                });
+                AdsUtil.runBannerAd(SettingsActivity.this, avMain, flBanner);
             }
         });
 
-        // below line is to change
-        // the title of our action bar.
-        getSupportActionBar().setTitle("Settings");
+        Toolbar tbCustom = (Toolbar) findViewById(R.id.tbCustom);
+        Utilities.initializeActionBar(this, tbCustom, "Settings");
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -65,12 +58,18 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//        if (interstitialAdObject.getInterstitialAd() != null) {
-//            interstitialAdObject.getInterstitialAd().show(this);
-//        }
-//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (interstitialAdObject.getInterstitialAd() != null) {
+            interstitialAdObject.getInterstitialAd().show(this);
+        }
+    }
 }

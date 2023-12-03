@@ -30,7 +30,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.happenstance.projsc.constants.Broadcast;
 import com.happenstance.projsc.constants.Notifications;
 import com.happenstance.projsc.preferences.Preferences;
-import com.happenstance.projsc.preferences.SettingsActivity;
 import com.happenstance.projsc.utils.Utilities;
 
 import java.util.Calendar;
@@ -40,7 +39,7 @@ public class FloatingButtonService extends Service {
 
     private static Intent intentConsentToken;
     private static ForegroundWindow foregroundWindow;
-    private static ImageView ivButton; //, ivCamera;
+    private static ImageView ivButton; //, ivDelete; //, ivCamera;
     private static boolean isServiceRunning = false, showButtonSwitch = false; //, isForegroundRunning = false;
     private static DisplayMetrics displayMetrics;
 
@@ -109,7 +108,8 @@ public class FloatingButtonService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         isServiceRunning = true;
         foregroundWindow = new ForegroundWindow(this); //, runnableOnPress);
-        foregroundWindow.attachView();
+        foregroundWindow.attachViewFloatingTool();
+        foregroundWindow.attachViewDeleteArea();
         showUI();
 
         return START_NOT_STICKY;
@@ -128,22 +128,22 @@ public class FloatingButtonService extends Service {
 
         Intent intentNotification = new Intent(this, MainActivity.class);
         PendingIntent piNotification =
-                PendingIntent.getActivity(this,0, intentNotification, 0);
+                PendingIntent.getActivity(this,0, intentNotification, PendingIntent.FLAG_IMMUTABLE);
 
         Intent intentShow = new Intent(this, NotificationResponderService.class);
         intentShow.setAction(Notifications.ACTION_SHOW);
-        PendingIntent piShow = PendingIntent.getService(this, 0, intentShow, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent piShow = PendingIntent.getService(this, 0, intentShow, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
         Intent intentHide = new Intent(this, NotificationResponderService.class);
         intentHide.setAction(Notifications.ACTION_HIDE);
-        PendingIntent piHide = PendingIntent.getService(this, 0, intentHide, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent piHide = PendingIntent.getService(this, 0, intentHide, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
         Intent intentDismiss = new Intent(this, NotificationResponderService.class);
         intentDismiss.setAction(Notifications.ACTION_DISMISS);
-        PendingIntent piDismiss = PendingIntent.getService(this, 0, intentDismiss, PendingIntent.FLAG_CANCEL_CURRENT);
+//        PendingIntent piDismiss = PendingIntent.getService(this, 0, intentDismiss, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Intent intentSettings = new Intent(this, SettingsActivity.class);
-        PendingIntent piSettings = PendingIntent.getActivity(this,0, intentSettings, 0);
+//        Intent intentSettings = new Intent(this, SettingsActivity.class);
+//        PendingIntent piSettings = PendingIntent.getActivity(this,0, intentSettings, 0);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, getString(R.string.notification_channel_id));
@@ -206,7 +206,7 @@ public class FloatingButtonService extends Service {
         private WindowManager.LayoutParams layoutParams;
         private WindowManager windowManager;
         private LayoutInflater layoutInflater;
-        private View viewFloatingTool;
+        private View viewFloatingTool, viewDeleteArea;
 
         private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             private static final int MAX_CLICK_DURATION = 100;
@@ -227,8 +227,10 @@ public class FloatingButtonService extends Service {
                         initialY = layoutParams.y;
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
+                        viewDeleteArea.setVisibility(View.VISIBLE);
                         return true;
                     case MotionEvent.ACTION_UP:
+                        viewDeleteArea.setVisibility(View.GONE);
                         //Log.d("AD","Action Up");
                         long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
                         if (clickDuration < MAX_CLICK_DURATION) {
@@ -236,6 +238,11 @@ public class FloatingButtonService extends Service {
                             hideUI();
 
                             startScreenCapture();
+                        } else {
+                            if (Utilities.isViewOverlapping(viewFloatingTool, viewDeleteArea)) {
+//                                Toast.makeText(context, "DELETE", Toast.LENGTH_SHORT).show();
+                                hideUI();
+                            }
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:
@@ -245,6 +252,7 @@ public class FloatingButtonService extends Service {
 //                        Log.e(TAG, "Changing from initialX " + initialX + " or initialTouchX " + initialTouchX +
 //                                " to mParams.x " + mParams.x + " via event.getRawX() " + event.getRawX());
                         windowManager.updateViewLayout(viewFloatingTool, layoutParams);
+//                        ivDelete.setVisibility(View.VISIBLE);
                         return true;
                 }
                 return false;
@@ -253,10 +261,13 @@ public class FloatingButtonService extends Service {
 
         private ForegroundWindow(Context context) { //, Runnable runnableOnButtonPress){
             this.context = context;
+            windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             //this.runnableOnButtonPress = runnableOnButtonPress;
         }
 
-        private void attachView() {
+        private void attachViewFloatingTool() {
             // set the layout parameters of the window
             layoutParams = new WindowManager.LayoutParams(
                     // Shrink the window to wrap the content rather
@@ -270,8 +281,8 @@ public class FloatingButtonService extends Service {
                     // through any transparent parts
                     PixelFormat.TRANSLUCENT);
             layoutParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
-            windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
-            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+//            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             viewFloatingTool = layoutInflater.inflate(R.layout.tools_tray, null);
 
             viewFloatingTool.setOnTouchListener(onTouchListener);
@@ -283,9 +294,38 @@ public class FloatingButtonService extends Service {
             setButtonOpacity(FloatingButtonService.this, null);
         }
 
+        private void attachViewDeleteArea() {
+            // set the layout parameters of the window
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
+                    // Shrink the window to wrap the content rather
+                    // than filling the screen
+                    WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
+                    // Display it on top of other application windows
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    // Don't let it grab the input focus
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    // Make the underlying application window visible
+                    // through any transparent parts
+                    PixelFormat.TRANSLUCENT);
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+            layoutParams.y = 50;
+//            windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+//            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            viewDeleteArea = layoutInflater.inflate(R.layout.delete_tray, null);
+
+//            viewDeleteArea.setOnTouchListener(onTouchListener);
+            windowManager.addView(viewDeleteArea, layoutParams);
+
+//            ivDelete = viewDeleteArea.findViewById(R.id.ivDelete);
+//            setButtonColor(FloatingButtonService.this, null);
+//            setButtonSize(FloatingButtonService.this, null);
+//            setButtonOpacity(FloatingButtonService.this, null);
+        }
+
         private void detachView() {
             if (windowManager != null && viewFloatingTool != null) {
                 windowManager.removeView(viewFloatingTool);
+                windowManager.removeView(viewDeleteArea);
             }
         }
     }

@@ -8,18 +8,22 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -36,9 +40,14 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.happenstance.projsc.constants.Broadcast;
 import com.happenstance.projsc.exception_handler.ExceptionHandler;
 //import com.happenstance.projsc.models.InterstitialAdObject;
+import com.happenstance.projsc.gallery.GalleryActivity;
+import com.happenstance.projsc.models.InterstitialAdObject;
 import com.happenstance.projsc.preferences.SettingsActivity;
+import com.happenstance.projsc.utils.AdsUtil;
 import com.happenstance.projsc.utils.Utilities;
 import com.google.android.material.card.MaterialCardView;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -68,22 +77,11 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                avMain.loadAd(adRequest);
-                avMain.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        Log.e(TAG, "Failed to load Admob banner: " + loadAdError.getMessage());
-                    }
+//                AdsUtil.loadInterstitial(MainActivity.this,
+//                        getString(R.string.interstitial_ad_id),
+//                        interstitialAdObject, null);
 
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        flBanner.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "Successfully loaded Admob banner");
-                    }
-                });
+                AdsUtil.runBannerAd(MainActivity.this, avMain, flBanner);
             }
         });
 
@@ -119,11 +117,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MaterialCardView mcvSettings = findViewById(R.id.mcvSettings);
+        Button mcvSettings = findViewById(R.id.buttonSettings);
         mcvSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button mcvGallery = findViewById(R.id.buttonGallery);
+        mcvGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
                 startActivity(intent);
             }
         });
@@ -225,24 +232,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private ActivityResultLauncher<Intent> arlOverlayPermission =
-//            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//                @Override
-//                public void onActivityResult(ActivityResult result) {
-//                    if (!Settings.canDrawOverlays(MainActivity.this)) {
-//                        checkOverlayPermission();
-//                    }
-//                }
-//            });
+    private void checkXiaomiPopupPermission() {
+        String title = "Pop-up windows Permission";
+        String msg = "You must grant " + getString(R.string.app_name) + " permission to display pop-up windows while running in the background.";
+        String positive = "Go to Settings";
+        String negative = "Dismiss";
+        int imageResourceLayout = R.layout.layout_sample_pop_up_permission;
 
-    // method to ask user to grant the Overlay permission
+        Runnable runOnPositive = new Runnable() {
+            @Override
+            public void run() {
+                final Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                intent.setClassName("com.miui.securitycenter",
+                        "com.miui.permcenter.permissions.PermissionsEditorActivity");
+                intent.putExtra("extra_pkgname", getPackageName());
+
+                startActivity(intent);
+            }
+        };
+
+        Utilities.showDialogPositiveNegativeWithImage(this, title, msg, positive, negative,
+                runOnPositive, null, imageResourceLayout);
+    }
+
     private void checkOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
             String title = "Overlay Permission";
             String msg = "You must grant " + getString(R.string.app_name) + " permission to draw or display over other apps in order to proceed.";
             String positive = "Go to Settings";
             String negative = "Quit";
-            int imageResource = R.raw.sample_overlay_permission;
+            int imageResourceLayout = R.layout.layout_sample_overlay_permission;
+
             Runnable runOnPositive = new Runnable() {
                 @Override
                 public void run() {
@@ -263,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
             };
 
             Utilities.showDialogPositiveNegativeWithImage(this, title, msg, positive, negative,
-                    runOnPositive, runOnNegative, imageResource);
+                    runOnPositive, runOnNegative, imageResourceLayout);
         }
     }
 
@@ -335,6 +355,26 @@ public class MainActivity extends AppCompatActivity {
         } else if (!FloatingButtonService.hasConsentToken()) {
             checkMediaProjectionPermission();
         } else {
+            if ("xiaomi".equals(Build.MANUFACTURER.toLowerCase(Locale.ROOT))) {
+                checkXiaomiPopupPermission();
+//                final Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+//                intent.setClassName("com.miui.securitycenter",
+//                        "com.miui.permcenter.permissions.PermissionsEditorActivity");
+//                intent.putExtra("extra_pkgname", getPackageName());
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Please Enable the additional permissions")
+//                        .setMessage("You will not receive notifications while the app is in background if you disable these permissions")
+//                        .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                startActivity(intent);
+
+
+//                            }
+//                        })
+//                        .setIcon(android.R.drawable.ic_dialog_info)
+//                        .setCancelable(false)
+//                        .show();
+            }
             startFloatingButtonService();
             powerSwitch = true;
             switchFloatingButton.setChecked(true);
