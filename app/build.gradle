@@ -6,14 +6,15 @@ apply plugin: 'com.google.gms.google-services'
 //}
 
 android {
+    namespace "com.happenstance.projsc"
     compileSdk 33
 
     defaultConfig {
         applicationId "com.happenstance.projsc"
         minSdk 28
         targetSdk 33
-        versionCode 14
-        versionName "1.1.0"
+        versionCode 16
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

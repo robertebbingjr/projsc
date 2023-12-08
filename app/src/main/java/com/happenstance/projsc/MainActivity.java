@@ -74,16 +74,16 @@ public class MainActivity extends AppCompatActivity {
         AdView avMain = findViewById(R.id.adView);
         FrameLayout flBanner = findViewById(R.id.flBanner);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-//                AdsUtil.loadInterstitial(MainActivity.this,
-//                        getString(R.string.interstitial_ad_id),
-//                        interstitialAdObject, null);
-
-                AdsUtil.runBannerAd(MainActivity.this, avMain, flBanner);
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+////                AdsUtil.loadInterstitial(MainActivity.this,
+////                        getString(R.string.interstitial_ad_id),
+////                        interstitialAdObject, null);
+//
+//                AdsUtil.runBannerAd(MainActivity.this, avMain, flBanner);
+//            }
+//        });
 
         ivPowerSwitch = findViewById(R.id.ivPowerButton);
         tvPowerSwitch = findViewById(R.id.tvPowerSwitch);

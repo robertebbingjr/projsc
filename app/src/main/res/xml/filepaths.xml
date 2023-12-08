@@ -1,0 +1,5 @@
+<paths>
+    <!--    Specify here the file paths that have the permission to be shared externally to other apps-->
+    <!--    Represents files in the root of the external storage area. The root path of this subdirectory is the same as the value returned by Environment.getExternalStorageDirectory().-->
+    <external-path name="Pictures" path="Pictures" />
+</paths>

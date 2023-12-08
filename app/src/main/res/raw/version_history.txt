@@ -1,3 +1,14 @@
+1.1.2
+- Gallery single task
+- Gradle + SDK upgrade
+- Main page banner removal
+(12/8/2023)
+
+1.1.1
+- Share image implementation
+- Fix Single Task Activity bug
+(12/3/2023)
+
 1.1.0
 - Incorporated gallery
 - Removed margin in captured images

@@ -14,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Projsc">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" /> <!-- Theme is optional and only needed if default theme has no action bar. -->
         <activity
             android:name=".SplashActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,12 +27,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".gallery.GalleryActivity"
-            android:exported="false">
-
-            <!-- <meta-data -->
-            <!-- android:name="android.app.lib_name" -->
-            <!-- android:value="" /> -->
+            android:exported="false"
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".about.VersionHistoryActivity"
@@ -41,25 +44,18 @@
         <activity
             android:name=".about.AboutActivity"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id" /> <!-- Theme is optional and only needed if default theme has no action bar. -->
-        <activity
-            android:name="com.canhub.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".CropActivity"
             android:exported="false"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <!--Need this declartion to allow actionbar to appear in the crop page-->
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".preferences.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"/>
-
         <service
             android:name=".FloatingButtonService"
             android:enabled="true"
@@ -68,6 +64,17 @@
         <service
             android:name=".NotificationResponderService"
             android:exported="false" />
+
+        <!-- Configure FileProvider so that you can share the images externally with other apps. See Dev Journal 12/3/2023 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>

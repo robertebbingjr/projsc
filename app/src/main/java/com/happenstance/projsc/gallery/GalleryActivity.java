@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.transition.Fade;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -164,6 +166,13 @@ public class GalleryActivity extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.gallery, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     public void onBackPressed() {

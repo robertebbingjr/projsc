@@ -4,6 +4,11 @@ import static androidx.core.view.ViewCompat.setTransitionName;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -24,6 +30,7 @@ import com.happenstance.projsc.models.ImageAsset;
 import com.happenstance.projsc.utils.Utilities;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +113,41 @@ public class ImageAssetAdapter extends RecyclerView.Adapter<ImageAssetAdapter.Im
                 .setItems(items.toArray(new String[0]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if ("Delete".equals(items.get(which))) {
+                        if ("Share".equals(items.get(which))) {
+////                            File mSaveBit; // Your image file
+//                            String filePath = imageAsset.getFilePath();
+//                            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+//
+//                            String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Image Description", null);
+//                            Uri uri = Uri.parse(path);
+//
+//                            Intent intent = new Intent(Intent.ACTION_SEND);
+//                            intent.setType("image/*");
+//                            intent.putExtra(Intent.EXTRA_STREAM, uri);
+//                            context.startActivity(Intent.createChooser(intent, "Share Image"));
+
+                            Intent intentShare = new Intent(Intent.ACTION_SEND);
+//                            Uri uri = Uri.parse(imageAsset.getFilePath());
+                            File file = new File(imageAsset.getFilePath());
+                            intentShare.setType("image/*");
+                            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
+                            intentShare.putExtra(Intent.EXTRA_STREAM, uri);
+//                            intentShare.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                            context.startActivity(Intent.createChooser(intentShare, "Share image"));
+
+//                            OutputStream outstream;
+//                            try {
+//                                outstream = context.getContentResolver().openOutputStream(uri);
+//                                icon.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+//                                outstream.close();
+//                            } catch (Exception e) {
+//                                System.err.println(e.toString());
+//                            }
+
+//                            intentShare.putExtra(Intent.EXTRA_STREAM, uri);
+//                            intentShare.setType("image/png");
+//                            context.startActivity(Intent.createChooser(intentShare, "Share image"));
+                        } else if ("Delete".equals(items.get(which))) {
                             Runnable runnableCombined = new Runnable() {
                                 @Override
                                 public void run() {

@@ -27,9 +27,10 @@ public class SplashActivity extends AppCompatActivity {
 
         final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
-        long fetchInterval = com.happenstance.projsc.BuildConfig.DEBUG
-                ? 0
-                : TimeUnit.HOURS.toSeconds(1);
+//        long fetchInterval = com.happenstance.projsc.BuildConfig.DEBUG
+//                ? 0
+//                : TimeUnit.HOURS.toSeconds(1);
+        long fetchInterval = TimeUnit.HOURS.toSeconds(1);
 
         firebaseRemoteConfig.fetch(fetchInterval)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
